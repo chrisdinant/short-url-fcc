@@ -13,6 +13,8 @@ var mongodb = require('mongodb');
 var MongoClient = mongodb.MongoClient;
 var url = 'mongodb://user1:user1234@ds021026.mlab.com:21026/short-url-fcc';
 
+app.set('json spaces', 2);
+
 app.get('/new/*', function(req, res){
     var para = req.params["0"];
     console.log(para);
@@ -32,11 +34,11 @@ app.get('/new/*', function(req, res){
             if (err) {
                 console.log(err);
             } else {
-                res.send(result.ops[0].key);
+                res.json({'your key is' : result.ops[0].key});
             }
         });
          
-        } else res.send(data[0].key); 
+        } else res.json({'your key is':data[0].key}); 
         
         db.close();
         });
@@ -48,7 +50,7 @@ app.get('/new/*', function(req, res){
 });
 
 app.get('/$', function(req, res){
-   res.send('In the address bar, after the current address, type "/new/" and then a valid URL (dont forget the http://!)'); 
+   res.send('In the address bar, after the current address, type "/new/" and then a valid URL (dont forget the http://!) <br><br> You will receive a 4-digit code that can be used at the end of the current address to send you to your link'); 
 });
 
 app.get('/*', function(req, res){
@@ -82,9 +84,6 @@ app.get('/*', function(req, res){
   }
 });
 });
-
-
-
 
 var port = Number(process.env.PORT || 8080);
 app.listen(port, function(){
